@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AorySoft - Book Your Meeting</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+        
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .back-to-chat {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .back-to-chat:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+        
+        .main-content {
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .message {
+            font-size: 1.3rem;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+        
+        .calendar-widget {
+            max-width: 800px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .note {
+            background: #e3f2fd;
+            border: 2px solid #2196f3;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 30px;
+            text-align: center;
+        }
+        
+        .note h3 {
+            color: #1976d2;
+            margin-bottom: 10px;
+        }
+        
+        .note p {
+            color: #1565c0;
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="/" class="back-to-chat">← Back to Chat</a>
+            <h1>🚀 AorySoft</h1>
+            <p>Schedule Your Business Transformation Meeting</p>
+        </div>
+        
+        <div class="main-content">
+            <div class="message">
+                Welcome to our booking system! The interactive calendar will appear here when you access it through the chatbot.
+            </div>
+            
+            <div class="calendar-widget">
+                <h2>📅 Interactive Calendar</h2>
+                <p>This page is designed to display the beautiful calendar widget when accessed with available time slots from the chatbot.</p>
+                <p>Please return to the main chat to request a meeting, and you'll see the interactive calendar there!</p>
+            </div>
+            
+            <div class="note">
+                <h3>💡 How to Book a Meeting</h3>
+                <p>1. Go back to the main chat interface</p>
+                <p>2. Ask for a meeting (e.g., "I want to meet" or "Can we schedule a call?")</p>
+                <p>3. The AI will show you a beautiful interactive calendar</p>
+                <p>4. Click on your preferred time slot to book instantly!</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Parse URL parameters to get slots
+        const urlParams = new URLSearchParams(window.location.search);
+        const slotsParam = urlParams.get('slots');
+        
+        if (slotsParam) {
+            try {
+                const slots = JSON.parse(decodeURIComponent(slotsParam));
+                console.log('Available slots:', slots);
+                
+                // If slots are provided, you could dynamically generate calendar here
+                // For now, we're using the embedded calendar in the chat response
+                
+            } catch (e) {
+                console.error('Error parsing slots:', e);
+            }
+        }
+    </script>
+</body>
+</html>

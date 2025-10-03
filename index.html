@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AorySoft - Lead Generation Chatbot</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+        
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .chat-container {
+            height: 500px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background: #f8f9fa;
+        }
+        
+        .message {
+            margin-bottom: 15px;
+            padding: 15px 20px;
+            border-radius: 15px;
+            max-width: 80%;
+            word-wrap: break-word;
+        }
+        
+        .user-message {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+            margin-left: auto;
+            border-bottom-right-radius: 5px;
+        }
+        
+        .bot-message {
+            background: white;
+            color: #2c3e50;
+            border: 2px solid #e9ecef;
+            border-bottom-left-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .input-container {
+            padding: 20px;
+            background: white;
+            border-top: 2px solid #e9ecef;
+        }
+        
+        .input-row {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .message-input {
+            flex: 1;
+            padding: 15px 20px;
+            border: 2px solid #e9ecef;
+            border-radius: 25px;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        
+        .message-input:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+        
+        .send-btn {
+            padding: 15px 25px;
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .send-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+        }
+        
+        .send-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .typing-indicator {
+            display: none;
+            padding: 15px 20px;
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 15px;
+            max-width: 80%;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: absolute;
+            bottom: 80px;
+            left: 20px;
+            z-index: 10;
+        }
+        
+        .typing-dots {
+            display: flex;
+            gap: 5px;
+            align-items: center;
+        }
+        
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #3498db;
+            animation: typing 1.4s infinite ease-in-out;
+        }
+        
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+        
+        @keyframes typing {
+            0%, 80%, 100% { transform: scale(0.8); opacity: 0.5; }
+            40% { transform: scale(1); opacity: 1; }
+        }
+        
+
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .container {
+                margin: 10px;
+                border-radius: 15px;
+            }
+            
+            .message {
+                max-width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 AorySoft</h1>
+            <p>AI-Powered Lead Generation Assistant</p>
+        </div>
+        
+
+        
+        <div class="chat-container">
+            <div class="messages" id="messagesContainer">
+                <div class="message bot-message">
+                    Hello! I'm your AorySoft lead generation assistant. I'm here to help understand your business challenges and see how our custom software solutions can help. What specific problems are you facing in your business today?
+                </div>
+            </div>
+            
+            <div class="typing-indicator" id="typingIndicator">
+                <div class="typing-dots">
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                </div>
+            </div>
+            
+            <div class="input-container">
+                <div class="input-row">
+                    <input 
+                        type="text" 
+                        id="messageInput" 
+                        class="message-input" 
+                        placeholder="Type your message here..."
+                        onkeypress="handleKeyPress(event)"
+                    >
+                    <button id="sendBtn" class="send-btn" onclick="sendMessage()">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const messagesContainer = document.getElementById('messagesContainer');
+        const messageInput = document.getElementById('messageInput');
+        const sendBtn = document.getElementById('sendBtn');
+        const typingIndicator = document.getElementById('typingIndicator');
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        function showTyping() {
+            // Position the typing indicator at the bottom of messages
+            typingIndicator.style.display = 'block';
+            typingIndicator.style.position = 'relative';
+            typingIndicator.style.bottom = 'auto';
+            typingIndicator.style.left = 'auto';
+            typingIndicator.style.marginBottom = '15px';
+            
+            // Add it to the messages container
+            messagesContainer.appendChild(typingIndicator);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function hideTyping() {
+            typingIndicator.style.display = 'none';
+            // Reset positioning for next use
+            typingIndicator.style.position = 'absolute';
+            typingIndicator.style.bottom = '80px';
+            typingIndicator.style.left = '20px';
+            typingIndicator.style.marginBottom = '0';
+        }
+
+        async function sendMessage() {
+            const message = messageInput.value.trim();
+            if (!message) return;
+
+            // Add user message to chat
+            addMessage(message, 'user');
+            messageInput.value = '';
+            sendBtn.disabled = true;
+            showTyping();
+
+            try {
+                const response = await fetch('/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ message: message })
+                });
+
+                const data = await response.json();
+                hideTyping();
+
+                // Add bot response to chat
+                addMessage(data.response, 'bot');
+
+            } catch (error) {
+                hideTyping();
+                addMessage('Sorry, there was an error. Please try again.', 'bot');
+                console.error('Error:', error);
+            }
+
+            sendBtn.disabled = false;
+            messageInput.focus();
+        }
+
+        function addMessage(message, sender) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}-message`;
+            
+            // If it's a bot message, allow HTML content (for calendar widget)
+            if (sender === 'bot') {
+                messageDiv.innerHTML = message;
+            } else {
+                messageDiv.textContent = message;
+            }
+            
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        // Focus on input when page loads
+        window.addEventListener('load', () => {
+            messageInput.focus();
+        });
+        
+        // Global functions for calendar widget
+        window.selectTimeSlot = function(slot, button) {
+            console.log('Time slot selected:', slot);
+            
+            // Remove previous selection
+            document.querySelectorAll('.time-slot').forEach(btn => {
+                btn.style.background = 'linear-gradient(135deg, #3498db 0%, #2980b9 100%)';
+            });
+            
+            // Highlight selected slot
+            button.style.background = 'linear-gradient(135deg, #e74c3c 0%, #c0392b 100%)';
+            
+            // Store selected slot globally
+            window.selectedSlot = slot;
+            
+            // Show booking form
+            const form = document.getElementById('bookingForm');
+            const display = document.getElementById('selectedSlotDisplay');
+            
+            if (form && display) {
+                display.textContent = `Selected: ${slot}`;
+                form.classList.add('show');
+                
+                // Scroll to form
+                form.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            } else {
+                console.error('Booking form elements not found');
+            }
+        };
+        
+        window.submitBooking = async function(event) {
+            event.preventDefault();
+            console.log('Submitting booking for slot:', window.selectedSlot);
+            
+            if (!window.selectedSlot) {
+                alert('Please select a time slot first!');
+                return;
+            }
+            
+            const formData = {
+                name: document.getElementById('clientName').value,
+                email: document.getElementById('clientEmail').value,
+                phone: document.getElementById('clientPhone').value,
+                company: document.getElementById('clientCompany').value,
+                selected_slot: window.selectedSlot,
+                message: document.getElementById('clientMessage').value
+            };
+            
+            console.log('Form data:', formData);
+            
+            try {
+                const response = await fetch('/save-form', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+                
+                const result = await response.json();
+                console.log('Booking result:', result);
+                
+                if (result.success) {
+                    alert('🎉 Meeting scheduled successfully! We\'ll contact you within 24 hours to confirm.');
+                    const form = document.getElementById('bookingForm');
+                    if (form) {
+                        form.style.display = 'none';
+                    }
+                } else {
+                    alert('Error: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Booking error:', error);
+                alert('Sorry, there was an error. Please try again.');
+            }
+        };
+        
+        console.log('Global functions defined:', typeof window.selectTimeSlot, typeof window.submitBooking);
+    </script>
+</body>
+</html>
