@@ -16,7 +16,7 @@ from langchain_core.prompts import PromptTemplate
 from langchain import hub
 
 # Set your Google API key
-os.environ["GOOGLE_API_KEY"] = "AIzaSyDjh1LP2YSKKDAx9vh3sCF5wBkbCHUqWU0" 
+os.environ["GOOGLE_API_KEY"] = "" 
 
 # Initialize FastAPI app
 app = FastAPI(title="Lead Generation Chatbot API", version="1.0.0")
